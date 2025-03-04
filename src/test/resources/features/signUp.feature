@@ -1,5 +1,5 @@
-@3
-Feature:Kullanici 2NTECH sitesinde bulunan basvuru formunu başaralı bir şekilde gönderebilmelidir
+@Test1
+Feature:Kullanici Forceget sitesinde bulunan formunu başaralı bir şekilde gönderebilmelidir
   Scenario: TC03_Basvuru_formu_basarili_bir_sekilde_gönderilmeli
     Given Kullanici "https://app.forceget.com/system/account/register" gider
     When Kullanici FirstName inputuna "bir isim" girer
