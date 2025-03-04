@@ -2,8 +2,11 @@ package stepdefinitions;
 import com.github.javafaker.Faker;
 import io.cucumber.java.en.Given;
 import io.cucumber.java.en.When;
+import org.openqa.selenium.JavascriptExecutor;
+import org.openqa.selenium.Keys;
 import org.openqa.selenium.WebElement;
 import pages.FormPages;
+import utilities.ConfigReader;
 import utilities.Driver;
 import utilities.ReusableMethods;
 import java.util.List;
@@ -35,49 +38,31 @@ public class P01_SignUp {
     }
     @When("Kullanici Cauntry dropdownundan bir ülke seçer")
     public void kullanici_cauntry_dropdownundan_bir_ülke_seçer() {
+
         // Dropdown'u aç
         ReusableMethods.clickElementWithJs(form.country);
         ReusableMethods.waitFor(3);
         ReusableMethods.scrollElementWithJs(form.password);
 
-        // Dropdown'daki tüm seçenekleri al
+        // Dropdown'daki tüm seçenekleri alır
         List<WebElement> options = form.countryList;
         System.out.println("Toplam ülke sayısı: " + options.size());
 
-       // Eğer seçenekler boş değilse, rastgele bir ülke seç
+       // Eğer seçenekler boş değilse, rastgele bir ülke seçer
         if (!options.isEmpty()) {
             int randomIndex = new Random().nextInt(options.size());
-            WebElement selectedOption = options.get(randomIndex); // Önce seçilecek elementi değişkene ata
-
-            String selectedCountry = selectedOption.getText(); // Tıklamadan önce metni al
+            // Önce seçilecek elementi değişkene atar
+            WebElement selectedOption = options.get(randomIndex);
+        // Tıklamadan önce metni alır
+            String selectedCountry = selectedOption.getText();
             selectedOption.click(); // Seçimi yap
 
-            System.out.println("Seçilen Ülke: " + selectedCountry); // Seçilen ülkeyi ekrana yazdır
+            System.out.println("Seçilen Ülke: " + selectedCountry);
         } else {
             System.out.println("Ülke seçenekleri bulunamadı!");
         }
         ReusableMethods.waitFor(2);
 
-        /*
-        form = new FormPages();
-        ReusableMethods.clickElementWithJs(form.country);
-        ReusableMethods.waitFor(3);
-        List<WebElement> options = form.countryList;
-
-        System.out.println(options.size());
-
-        // Eğer seçenekler boş değilse, rastgele bir ülke seç
-        if (!options.isEmpty()) {
-            int randomIndex = new Random().nextInt(options.size());
-            options.get(randomIndex).click();
-            System.out.println("Seçilen Ülke: " + options.get(randomIndex).getText());
-        } else {
-            System.out.println("Ülke seçenekleri bulunamadı!");
-        }
-
-        ReusableMethods.waitFor(2);
-
-*/
     }
     @When("Kullanici MobileNumber inbutuna {string} girer")
     public void kullanici_mobile_number_inbutuna_girer(String string) {
@@ -95,9 +80,26 @@ public class P01_SignUp {
     }
     @When("Kullanici Email inputuna {string} girer")
    public void kullanici_email_inputuna_girer(String string) {
+
         form = new FormPages();
         form.email.sendKeys(string);
         ReusableMethods.waitFor(3);
+/*
+     !!!Bu kod fake maile url e gidip email kopyalayıp input içine yazmaktadır!!!
+
+        ((JavascriptExecutor) Driver.getDriver()).executeScript("window.open()"); //Yeni sekme açar
+        ReusableMethods.switchToWindow(1); // Yeni sekmeye geçer
+        Driver.getDriver().navigate().to("https://www.fakemail.net/"); // Yeni sekmede URL'yi açar
+
+        form = new FormPages();
+        String mailAdresi = form.fakeMail.getText();
+        System.out.println(mailAdresi);
+        ReusableMethods.switchToWindow(0); // Yeni sekmeye geçer
+        Driver.getDriver().navigate().to("https://app.forceget.com/system/account/register");
+        ReusableMethods.waitFor(3);
+        form.email.sendKeys(mailAdresi);
+        ReusableMethods.waitFor(3);
+ */
     }
     @When("Kullanici bir Title seçer")
     public void kullanici_bir_title_seçer() {
@@ -127,13 +129,16 @@ public class P01_SignUp {
         form = new FormPages();
         form.confirmPassword.sendKeys(string);
         ReusableMethods.waitFor(3);
+    }
+    @When("Kullanici checkbox a tiklar")
+    public void kullanici_checkbox_a_tiklar() {
         ReusableMethods.scrollIntoViewJS(form.checkbox);
         form.checkbox.click();
         ReusableMethods.waitFor(5);
 
         try {
             if (form.accept.isDisplayed()) {
-               form.accept.click();
+                form.accept.click();
             } else {
                 // Eğer buton görünmezse JavaScript ile tıkla
                 ReusableMethods.scrollElementWithJs(form.accept);
@@ -142,7 +147,7 @@ public class P01_SignUp {
             // Eğer hala tıklamazsa önce modal içinde scroll yapıp sonra tıkla
             ReusableMethods.scrollElementWithJs(form.accept);
             ReusableMethods.clickElementWithJs(form.accept);
-    }
+        }
 
         ReusableMethods.scrollElementWithJs(form.agreeButton);
         ReusableMethods.waitFor(2);
@@ -154,5 +159,10 @@ public class P01_SignUp {
 
 
 
+
+
     }
+
+
+
 }

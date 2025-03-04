@@ -25,11 +25,12 @@ public class FormPages {
     public WebElement companyName;
     @FindBy(xpath = "//input[@formcontrolname='email']")
     public WebElement email;
+    @FindBy(id = "email")
+    public WebElement fakeMail;
     @FindBy(xpath = "//nz-select[@formcontrolname='jobTitle']")
     public WebElement title;
-    @FindBy(xpath = "//div[@class='cdk-virtual-scroll-content-wrapper']")
+    @FindBy(xpath = "//div[@class='cdk-overlay-pane']//nz-option-container")
     public List<WebElement> titleList;
-
     @FindBy(xpath = "//input[@formcontrolname='password']")
     public WebElement password;
     @FindBy(xpath = "//input[@formcontrolname='passwordConfirm']")
